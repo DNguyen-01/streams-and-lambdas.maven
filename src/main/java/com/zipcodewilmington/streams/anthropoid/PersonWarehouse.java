@@ -4,10 +4,7 @@ import com.zipcodewilmington.streams.tools.ReflectionUtils;
 import com.zipcodewilmington.streams.tools.logging.LoggerHandler;
 import com.zipcodewilmington.streams.tools.logging.LoggerWarehouse;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,7 +55,7 @@ public final class PersonWarehouse implements Iterable<Person> {
 
         List<Person> uniqueName = new ArrayList<>();
         people.stream()
-                .forEach(person-> {
+                .forEach(person -> {
                     if (listUniqueName.contains(person.getName())) {
                         uniqueName.add(person);
                         listUniqueName.remove(person.getName());
@@ -76,7 +73,7 @@ public final class PersonWarehouse implements Iterable<Person> {
      */ //TODO
     public Stream<Person> getUniquelyNamedPeopleStartingWith(Character character) {
 
-            Stream<Person> newListofPeopleStartingWith = getUniquelyNamedPeople().filter(person ->
+        Stream<Person> newListofPeopleStartingWith = getUniquelyNamedPeople().filter(person ->
                 person.getName()
                         .charAt(0) == character);
 
@@ -97,9 +94,10 @@ public final class PersonWarehouse implements Iterable<Person> {
      */ // TODO
     public Map<Long, String> getIdToNameMap() {
 
-        Map<Long, String> newIdMap = people.stream().map(this)
+        Map<Long, String> newIdMap = people.stream()
+                .collect(Collectors.toMap(Person::getPersonalId, Person::getName));
 
-        return null;
+        return newIdMap;
     }
 
 
@@ -107,7 +105,9 @@ public final class PersonWarehouse implements Iterable<Person> {
      * @return Stream of Stream of Aliases
      */ // TODO
     public Stream<Stream<String>> getNestedAliases() {
-        return null;
+
+        return Stream.of(getAllAliases());
+
     }
 
 
@@ -115,7 +115,12 @@ public final class PersonWarehouse implements Iterable<Person> {
      * @return Stream of all Aliases
      */ // TODO
     public Stream<String> getAllAliases() {
-        return null;
+
+         Stream<String> allAliasesList = people.stream()
+                .flatMap(person ->
+                        Arrays.stream(person.getAliases()));
+
+        return allAliasesList;
     }
 
     // DO NOT MODIFY
