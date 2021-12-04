@@ -12,6 +12,7 @@ import java.util.stream.Stream;
  */
 public final class StreamConverter extends PersonConversionAgent<Stream<Person>> {
     private final List<Person> personList;
+
     public StreamConverter(Stream<Person> people) {
         super(people);
         this.personList = super.objectSequence.collect(Collectors.toList());
@@ -25,16 +26,22 @@ public final class StreamConverter extends PersonConversionAgent<Stream<Person>>
 
     // TODO
     public List<Person> toList() {
-        return null;
+
+        return personList;
+
     }
 
     // TODO
     public Stream<Person> toStream() {
-        return null;
+
+        return personList.stream();
+
     }
 
     // TODO
     public Person[] toArray() {
-        return null;
+
+        return personList.toArray(new Person[0]);
+
     }
 }
