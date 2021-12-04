@@ -36,7 +36,12 @@ public final class PersonWarehouse implements Iterable<Person> {
      * @return list of names of Person objects
      */ // TODO
     public List<String> getNames() {
-        return null;
+
+        List<String> newListOfNames = people.stream()
+                .map(Person::getName)
+                .collect(Collectors.toList());
+
+        return newListOfNames;
     }
 
 
@@ -44,7 +49,24 @@ public final class PersonWarehouse implements Iterable<Person> {
      * @return list of uniquely named Person objects
      */ //TODO
     public Stream<Person> getUniquelyNamedPeople() {
-        return null;
+
+        List<String> listUniqueName = people.stream()
+                .map(Person::getName)
+                .sorted()
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<Person> uniqueName = new ArrayList<>();
+        people.stream()
+                .forEach(person-> {
+                    if (listUniqueName.contains(person.getName())) {
+                        uniqueName.add(person);
+                        listUniqueName.remove(person.getName());
+                    }
+
+                });
+
+        return uniqueName.stream();
     }
 
 
@@ -53,21 +75,30 @@ public final class PersonWarehouse implements Iterable<Person> {
      * @return a Stream of respective
      */ //TODO
     public Stream<Person> getUniquelyNamedPeopleStartingWith(Character character) {
-        return null;
+
+            Stream<Person> newListofPeopleStartingWith = getUniquelyNamedPeople().filter(person ->
+                person.getName()
+                        .charAt(0) == character);
+
+        return newListofPeopleStartingWith;
     }
 
     /**
      * @param n first `n` Person objects
-     * @return a Stream of respective
+     * @return a Stream of respective ???of what??
      */ //TODO
     public Stream<Person> getFirstNUniquelyNamedPeople(int n) {
-        return null;
+
+        return getUniquelyNamedPeople().limit(n);
     }
 
     /**
      * @return a mapping of Person Id to the respective Person name
      */ // TODO
     public Map<Long, String> getIdToNameMap() {
+
+        Map<Long, String> newIdMap = people.stream().map(this)
+
         return null;
     }
 
